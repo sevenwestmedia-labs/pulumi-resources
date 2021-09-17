@@ -206,6 +206,20 @@
           }
         }
       }
+    },
+    "pulumi-static-site": {
+      "root": "libs/pulumi-static-site",
+      "projectType": "library",
+      "sourceRoot": "libs/pulumi-static-site/src",
+      "targets": {
+        "package": {
+          "executor": "@wanews/nx-typescript-project-references:package",
+          "options": {
+            "main": "libs/pulumi-static-site/src/index.ts",
+            "tsConfig": "libs/pulumi-static-site/tsconfig.json"
+          }
+        }
+      }
     }
   },
   "cli": { "defaultCollection": "@nrwl/workspace" }

@@ -24,6 +24,7 @@
     "invoke-lamda": { "tags": [] },
     "wait-for-ecs-deploy": { "tags": [] },
     "pulumi-pagerduty": { "tags": [] },
-    "invoke-step-function": { "tags": [] }
+    "invoke-step-function": { "tags": [] },
+    "pulumi-static-site": { "tags": [] }
   }
 }

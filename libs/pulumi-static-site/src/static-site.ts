@@ -15,12 +15,12 @@ export class StaticSite extends pulumi.ComponentResource {
     constructor(
         name: string,
         args: {
-            acmCertificateArn?: pulumi.Input<string>
             primaryDomain: pulumi.Input<string>
             redirectDomains?: pulumi.Input<string>[] | pulumi.Input<string[]>
             originDomainName: pulumi.Input<string>
             priceClass?: pulumi.Input<string>
-            cachePolicyId: pulumi.Input<string>
+            cachePolicyId?: pulumi.Input<string>
+            originRequestPolicyId?: pulumi.Input<string>
         },
         opts: pulumi.ComponentResourceOptions,
     ) {
@@ -82,6 +82,9 @@ export class StaticSite extends pulumi.ComponentResource {
                 acmCertificateArn,
                 domains: [args.primaryDomain],
                 originDomainName: this.primaryBucket.websiteEndpoint,
+                priceClass: args.priceClass,
+                cachePolicyId: args.cachePolicyId,
+                originRequestPolicyId: args.originRequestPolicyId,
             },
             { parent: this },
         ).distribution
@@ -113,6 +116,9 @@ export class StaticSite extends pulumi.ComponentResource {
                         ...new Set([...(redirectDomains ?? [])]),
                     ]),
                 originDomainName: this.redirectBucket.websiteEndpoint,
+                priceClass: args.priceClass,
+                cachePolicyId: args.cachePolicyId,
+                originRequestPolicyId: args.originRequestPolicyId,
             },
             { parent: this },
         ).distribution

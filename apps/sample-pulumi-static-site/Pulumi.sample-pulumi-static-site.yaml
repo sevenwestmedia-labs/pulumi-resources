@@ -1,0 +1,4 @@
+secretsprovider: awskms://alias/pulumi?region=ap-southeast-2
+encryptedkey: AQICAHios5WA0pEWp4V6Jkqk4IKBA1XT3syZNjwP9uDt5I9/EgGthe9SPsiQ/y0IZE1aZOG3AAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMuiAfw5Lrwk2Vy+bzAgEQgDt8rm3f4OJehswfJ2q3sTY5rqeZoKSGKw1i3mpPjkzMjDVqr4PgBRlTyqMRZd0/SRpjogNHPNFTvHjv+Q==
+config:
+  aws:region: ap-southeast-2

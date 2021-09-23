@@ -1,36 +1,36 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "paths": {
-      "@wanews/pulumi-lambda": ["libs/pulumi-lambda/src/index.ts"],
-      "@wanews/pulumi-certificate-validation": [
-        "libs/certificate-validation/src/index.ts"
-      ],
-      "@wanews/pulumi-apigateway-lambda-proxy": [
-        "libs/apigateway-lambda-proxy/src/index.ts"
-      ],
-      "@wanews/pulumi-invoke-step-function": [
-        "libs/invoke-step-function/src/index.ts"
-      ]
-    }
-  },
-  "exclude": ["node_modules", "tmp"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "lib": ["es2019", "dom"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "paths": {
+            "@wanews/pulumi-lambda": ["libs/pulumi-lambda/src/index.ts"],
+            "@wanews/pulumi-certificate-validation": [
+                "libs/certificate-validation/src/index.ts"
+            ],
+            "@wanews/pulumi-apigateway-lambda-proxy": [
+                "libs/apigateway-lambda-proxy/src/index.ts"
+            ],
+            "@wanews/pulumi-invoke-step-function": [
+                "libs/invoke-step-function/src/index.ts"
+            ]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
 }

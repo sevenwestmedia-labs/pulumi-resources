@@ -10,7 +10,7 @@ export class Bucket extends pulumi.ComponentResource {
         args: {
             website?: aws.s3.BucketArgs['website']
         },
-        opts: pulumi.ComponentResourceOptions,
+        opts?: pulumi.ComponentResourceOptions,
     ) {
         super('swm:pulumi-static-site:bucket/Bucket', name, {}, opts)
 

@@ -1,30 +1,60 @@
 {
-  "npmScope": "wanews",
-  "affected": { "defaultBase": "master" },
-  "implicitDependencies": {
-    "workspace.json": "*",
-    "package.json": { "dependencies": "*", "devDependencies": "*" },
-    "tsconfig.base.json": "*",
-    "tslint.json": "*",
-    ".eslintrc.json": "*",
-    "nx.json": "*"
-  },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
+    "npmScope": "wanews",
+    "affected": {
+        "defaultBase": "master"
+    },
+    "implicitDependencies": {
+        "workspace.json": "*",
+        "package.json": {
+            "dependencies": "*",
+            "devDependencies": "*"
+        },
+        "tsconfig.base.json": "*",
+        "tslint.json": "*",
+        ".eslintrc.json": "*",
+        "nx.json": "*"
+    },
+    "tasksRunnerOptions": {
+        "default": {
+            "runner": "@nrwl/workspace/tasks-runners/default",
+            "options": {
+                "cacheableOperations": ["build", "lint", "test", "e2e"]
+            }
+        }
+    },
+    "projects": {
+        "pulumi-lambda": {
+            "tags": []
+        },
+        "certificate-validation": {
+            "tags": []
+        },
+        "apigateway-lambda-proxy": {
+            "tags": []
+        },
+        "buildstep": {
+            "tags": []
+        },
+        "throw-files-in-s3": {
+            "tags": []
+        },
+        "invoke-lamda": {
+            "tags": []
+        },
+        "wait-for-ecs-deploy": {
+            "tags": []
+        },
+        "pulumi-pagerduty": {
+            "tags": []
+        },
+        "invoke-step-function": {
+            "tags": []
+        },
+        "pulumi-static-site": {
+            "tags": []
+        },
+        "sample-pulumi-static-site": {
+            "tags": []
+        }
     }
-  },
-  "projects": {
-    "pulumi-lambda": { "tags": [] },
-    "certificate-validation": { "tags": [] },
-    "apigateway-lambda-proxy": { "tags": [] },
-    "buildstep": { "tags": [] },
-    "throw-files-in-s3": { "tags": [] },
-    "invoke-lamda": { "tags": [] },
-    "wait-for-ecs-deploy": { "tags": [] },
-    "pulumi-pagerduty": { "tags": [] },
-    "invoke-step-function": { "tags": [] },
-    "pulumi-static-site": { "tags": [] }
-  }
 }

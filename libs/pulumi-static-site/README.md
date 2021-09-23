@@ -10,11 +10,11 @@ Features:
 ## Usage
 
 ```
-import { StaticSite } from '@wanews/pulumi-static-site
+import { StaticSite } from '@wanews/pulumi-static-site'
 
 new StaticSite('example.com', {
     primaryDomain: 'example.com',
-    redirectDomains: [ 'www.example.com' ],
+    redirectDomains: ['www.example.com'],
 })
 ```
 

@@ -1,0 +1,1 @@
+# sample-pulumi-static-site

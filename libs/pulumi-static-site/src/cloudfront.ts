@@ -15,7 +15,7 @@ export class Distribution extends pulumi.ComponentResource {
             cachePolicyId?: pulumi.Input<string>
             originRequestPolicyId?: pulumi.Input<string>
         },
-        opts: pulumi.ComponentResourceOptions,
+        opts?: pulumi.ComponentResourceOptions,
     ) {
         super(
             'swm:pulumi-static-site:distribution/Distribution',

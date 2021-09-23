@@ -1,20 +1,23 @@
 {
-  "files": [],
-  "compilerOptions": {
-    "disableSourceOfProjectReferenceRedirect": true
-  },
-  "references": [
-    {
-      "path": "./libs/invoke-step-function"
+    "files": [],
+    "compilerOptions": {
+        "disableSourceOfProjectReferenceRedirect": true
     },
-    {
-      "path": "libs/apigateway-lambda-proxy"
-    },
-    {
-      "path": "libs/certificate-validation"
-    },
-    {
-      "path": "libs/pulumi-lambda"
-    }
-  ]
+    "references": [
+        {
+            "path": "./apps/sample-pulumi-static-site"
+        },
+        {
+            "path": "./libs/invoke-step-function"
+        },
+        {
+            "path": "libs/apigateway-lambda-proxy"
+        },
+        {
+            "path": "libs/certificate-validation"
+        },
+        {
+            "path": "libs/pulumi-lambda"
+        }
+    ]
 }

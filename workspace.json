@@ -15,7 +15,9 @@
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/pulumi-lambda/**/*.ts"] }
+          "options": {
+            "lintFilePatterns": ["libs/pulumi-lambda/**/*.ts"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -167,7 +169,9 @@
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/pulumi-lambda/**/*.ts"] }
+          "options": {
+            "lintFilePatterns": ["libs/pulumi-lambda/**/*.ts"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -220,7 +224,42 @@
           }
         }
       }
+    },
+    "sample-pulumi-static-site": {
+      "root": "apps/sample-pulumi-static-site",
+      "projectType": "application",
+      "sourceRoot": "apps/sample-pulumi-static-site/src",
+      "targets": {
+        "up": {
+          "executor": "@wanews/nx-pulumi:up",
+          "options": {
+            "buildTargets": [
+                {
+                  "configuration": "production",
+                  "project": "pulumi-static-site",
+                  "target": "package"
+                }
+            ]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/sample-pulumi-static-site/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/sample-pulumi-static-site/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/apps/sample-pulumi-static-site"]
+        }
+      }
     }
   },
-  "cli": { "defaultCollection": "@nrwl/workspace" }
+  "cli": {
+    "defaultCollection": "@nrwl/workspace"
+  }
 }

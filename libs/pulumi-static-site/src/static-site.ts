@@ -11,33 +11,42 @@ export class StaticSite extends pulumi.ComponentResource {
     primaryDistribution: aws.cloudfront.Distribution
     redirectBucket: aws.s3.Bucket
     redirectDistribution: aws.cloudfront.Distribution
+    records: pulumi.Output<aws.route53.Record[]>
 
     constructor(
         name: string,
         args: {
             primaryDomain: pulumi.Input<string>
             redirectDomains?: pulumi.Input<string>[] | pulumi.Input<string[]>
-            originDomainName: pulumi.Input<string>
             priceClass?: pulumi.Input<string>
             cachePolicyId?: pulumi.Input<string>
             originRequestPolicyId?: pulumi.Input<string>
         },
-        opts: pulumi.ComponentResourceOptions,
+        opts?: pulumi.ComponentResourceOptions,
     ) {
         super('swm:pulumi-static-site:static-site/StaticSite', name, {}, opts)
+
+        const primaryDomain = args.primaryDomain
+        const redirectDomains = pulumi
+            .all([primaryDomain, args.redirectDomains])
+            .apply(([primaryDomain, redirectDomains]) => {
+                const uniqueRedirectDomains = new Set(redirectDomains ?? [])
+                uniqueRedirectDomains.delete(primaryDomain)
+                return [...uniqueRedirectDomains]
+            })
 
         const cert = new aws.acm.Certificate(
             `${name}-cert`,
             {
-                domainName: args.primaryDomain,
-                subjectAlternativeNames: args.redirectDomains,
+                domainName: primaryDomain,
+                subjectAlternativeNames: redirectDomains,
                 validationMethod: 'DNS',
             },
             { parent: this },
         )
 
         const zones = pulumi
-            .all([args.primaryDomain, args.redirectDomains])
+            .all([primaryDomain, redirectDomains])
             .apply(([primaryDomain, redirectDomains]) =>
                 [...new Set([primaryDomain, ...redirectDomains])].map(
                     (domain) => ({
@@ -80,7 +89,7 @@ export class StaticSite extends pulumi.ComponentResource {
             `${name}-primary`,
             {
                 acmCertificateArn,
-                domains: [args.primaryDomain],
+                domains: [primaryDomain],
                 originDomainName: this.primaryBucket.websiteEndpoint,
                 priceClass: args.priceClass,
                 cachePolicyId: args.cachePolicyId,
@@ -98,7 +107,7 @@ export class StaticSite extends pulumi.ComponentResource {
             `${name}-redirects`,
             {
                 website: {
-                    redirectAllRequestsTo: pulumi.interpolate`https://${args.primaryDomain}`,
+                    redirectAllRequestsTo: pulumi.interpolate`https://${primaryDomain}`,
                 },
             },
             { parent: this },
@@ -111,7 +120,7 @@ export class StaticSite extends pulumi.ComponentResource {
             {
                 acmCertificateArn,
                 domains: pulumi
-                    .output(args.redirectDomains)
+                    .output(redirectDomains)
                     .apply((redirectDomains) => [
                         ...new Set([...(redirectDomains ?? [])]),
                     ]),
@@ -122,5 +131,62 @@ export class StaticSite extends pulumi.ComponentResource {
             },
             { parent: this },
         ).distribution
+
+        const getZoneIdForDomain = (domain: pulumi.Input<string>, z = zones) =>
+            pulumi.all([domain, z]).apply(
+                ([domain, zones]) =>
+                    zones.filter((x) => x.domain === domain).shift()?.zoneId ??
+                    (() => {
+                        throw new pulumi.ResourceError(
+                            `zone id lookup failed for domain`,
+                            this,
+                        )
+                    })(),
+            )
+
+        this.records = pulumi.output(redirectDomains).apply((redirectDomains) =>
+            ['AAAA', 'A']
+                .map((type) => [
+                    new aws.route53.Record(
+                        `${name}-${primaryDomain}-${type}`,
+                        {
+                            name: primaryDomain,
+                            type,
+                            zoneId: getZoneIdForDomain(primaryDomain),
+                            aliases: [
+                                {
+                                    name: this.primaryDistribution.domainName,
+                                    zoneId: this.primaryDistribution
+                                        .hostedZoneId,
+                                    evaluateTargetHealth: false,
+                                },
+                            ],
+                        },
+                        { parent: this },
+                    ),
+                    ...redirectDomains.map(
+                        (redirectDomain) =>
+                            new aws.route53.Record(
+                                `${name}-${redirectDomain}-${type}`,
+                                {
+                                    name: redirectDomain,
+                                    type,
+                                    zoneId: getZoneIdForDomain(redirectDomain),
+                                    aliases: [
+                                        {
+                                            name: this.redirectDistribution
+                                                .domainName,
+                                            zoneId: this.redirectDistribution
+                                                .hostedZoneId,
+                                            evaluateTargetHealth: false,
+                                        },
+                                    ],
+                                },
+                                { parent: this },
+                            ),
+                    ),
+                ])
+                .flat(),
+        )
     }
 }

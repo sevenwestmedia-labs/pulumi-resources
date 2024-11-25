@@ -49,10 +49,6 @@ export class BuildStep extends pulumi.ComponentResource {
         const runInDryRun = args.runInDryRun ?? true
 
         const buildStdOut = pulumi.output(args).apply(async (buildArgs) => {
-            if (pulumi.runtime.isTestModeEnabled()) {
-                return ''
-            }
-
             // Only run during preview step
             if (
                 (runInDryRun && pulumi.runtime.isDryRun()) ||

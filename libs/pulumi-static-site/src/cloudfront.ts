@@ -126,7 +126,7 @@ export class Distribution extends pulumi.ComponentResource {
                           minimumProtocolVersion: 'TLSv1.2_2019',
                           sslSupportMethod: 'sni-only',
                       },
-                      httpVersion: args.httpVersion ?? 'http2',
+                      httpVersion: args.httpVersion ?? 'http2and3',
                       webAclId: args.webAclId,
                       comment: pulumi.interpolate`Static Site Distribution for ${pulumi
                           .output(args.domains)

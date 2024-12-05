@@ -8,6 +8,7 @@ new StaticSite('static-site-example.com', {
         Environment: 'dev',
         CreatedBy: 'pulumi',
     }),
+    automaticallyPurgeCdn: true,
 })
 
 new StaticSite('sub-domain-static-site-example.com', {

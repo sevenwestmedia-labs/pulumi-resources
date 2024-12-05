@@ -6,6 +6,7 @@ import { Bucket, S3BucketOptions } from './bucket'
 import { CfDistributionOptions, Distribution } from './cloudfront'
 
 import { ValidateCertificate } from '@wanews/pulumi-certificate-validation'
+import { AutoCachePurge } from './auto-cache-purge'
 
 export interface StaticSiteArgs {
     primaryDomain: pulumi.Input<string>
@@ -28,6 +29,7 @@ export interface StaticSiteArgs {
         skipDns?: boolean
         allowOverwrite?: boolean
     }
+    automaticallyPurgeCdn?: boolean
 }
 
 export interface StaticSiteOptions extends pulumi.ComponentResourceOptions {
@@ -189,6 +191,14 @@ export class StaticSite extends pulumi.ComponentResource {
                     aliases: opts?.route53DnsAAAARecordAliases,
                 },
             )
+        }
+
+        if (args.automaticallyPurgeCdn) {
+            new AutoCachePurge(`${name}-auto-cache-purge`, {
+                bucket: this.primaryBucket,
+                distribution: this.primaryDistribution,
+                getTags: args.getTags,
+            })
         }
     }
 }

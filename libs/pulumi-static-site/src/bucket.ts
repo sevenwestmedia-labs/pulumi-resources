@@ -277,27 +277,24 @@ export class Bucket extends pulumi.ComponentResource {
                             args.bucketPolicyOverrides ??
                             Promise.resolve(undefined)
 
-                        return await bucketPolicyOverrides?.then((overrides) =>
-                            aws.iam
-                                .getPolicyDocument(
-                                    {
-                                        version: '2012-10-17',
-                                        sourcePolicyDocuments: [basePolicy],
-                                        overridePolicyDocuments: overrides
-                                            ? [
-                                                  ...(overrides?.map((policy) =>
-                                                      policy.replace(
-                                                          /{{BUCKETARN}}/g,
-                                                          bucketArn,
-                                                      ),
-                                                  ) ?? []),
-                                              ]
-                                            : undefined,
-                                    },
-                                    { parent: this },
-                                )
-                                .then((doc) => doc.json),
-                        )
+                        return await bucketPolicyOverrides
+                            ?.then((overrides) =>
+                                overrides?.map((policy) =>
+                                    policy.replace(/{{BUCKETARN}}/g, bucketArn),
+                                ),
+                            )
+                            .then((overridePolicyDocuments) =>
+                                aws.iam
+                                    .getPolicyDocument(
+                                        {
+                                            version: '2012-10-17',
+                                            sourcePolicyDocuments: [basePolicy],
+                                            overridePolicyDocuments,
+                                        },
+                                        { parent: this },
+                                    )
+                                    .then((doc) => doc.json),
+                            )
                     },
                 )
 
